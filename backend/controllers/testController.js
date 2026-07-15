@@ -378,7 +378,21 @@ exports.generateDynamicTest = async (req, res) => {
     const name = (username || 'Guest').trim();
     
     // 1. Gather all questions from non-dynamic mock tests
-    const staticTests = await MockTest.find({ isDynamic: { $ne: true } });
+    let staticTests = await MockTest.find({ isDynamic: { $ne: true } });
+    
+    // Auto-seed if database is empty
+    if (staticTests.length === 0) {
+      console.log('Database empty during test generation! Triggering auto-seeding...');
+      try {
+        const path = require('path');
+        const child_process = require('child_process');
+        child_process.execSync(`node "${path.join(__dirname, '../seed_badge_test.js')}"`, { stdio: 'inherit' });
+        staticTests = await MockTest.find({ isDynamic: { $ne: true } });
+      } catch (seedErr) {
+        console.error('Failed to run self-seeding script:', seedErr.message);
+      }
+    }
+
     let questionPool = [];
     staticTests.forEach(t => {
       t.questions.forEach(q => {
