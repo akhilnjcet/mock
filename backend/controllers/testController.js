@@ -250,12 +250,11 @@ exports.getTests = async (req, res) => {
     if (tests.length === 0) {
       console.log('Database empty! Triggering automatic self-seeding...');
       try {
-        const path = require('path');
-        const child_process = require('child_process');
-        child_process.execSync(`node "${path.join(__dirname, '../seed_badge_test.js')}"`, { stdio: 'inherit' });
+        const { seedDirect } = require('../seed_badge_test_direct');
+        await seedDirect();
         tests = await MockTest.find({ isDynamic: { $ne: true } }, 'title description createdAt').sort({ createdAt: -1 });
       } catch (seedErr) {
-        console.error('Failed to run self-seeding script:', seedErr.message);
+        console.error('Failed to run self-seeding function:', seedErr.message);
       }
     }
     
@@ -384,12 +383,11 @@ exports.generateDynamicTest = async (req, res) => {
     if (staticTests.length === 0) {
       console.log('Database empty during test generation! Triggering auto-seeding...');
       try {
-        const path = require('path');
-        const child_process = require('child_process');
-        child_process.execSync(`node "${path.join(__dirname, '../seed_badge_test.js')}"`, { stdio: 'inherit' });
+        const { seedDirect } = require('../seed_badge_test_direct');
+        await seedDirect();
         staticTests = await MockTest.find({ isDynamic: { $ne: true } });
       } catch (seedErr) {
-        console.error('Failed to run self-seeding script:', seedErr.message);
+        console.error('Failed to run self-seeding function:', seedErr.message);
       }
     }
 
