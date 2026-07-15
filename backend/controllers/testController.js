@@ -244,7 +244,21 @@ exports.saveTest = async (req, res) => {
 
 exports.getTests = async (req, res) => {
   try {
-    const tests = await MockTest.find({ isDynamic: { $ne: true } }, 'title description createdAt').sort({ createdAt: -1 });
+    let tests = await MockTest.find({ isDynamic: { $ne: true } }, 'title description createdAt').sort({ createdAt: -1 });
+    
+    // Auto-seed if database is empty
+    if (tests.length === 0) {
+      console.log('Database empty! Triggering automatic self-seeding...');
+      try {
+        const path = require('path');
+        const child_process = require('child_process');
+        child_process.execSync(`node "${path.join(__dirname, '../seed_badge_test.js')}"`, { stdio: 'inherit' });
+        tests = await MockTest.find({ isDynamic: { $ne: true } }, 'title description createdAt').sort({ createdAt: -1 });
+      } catch (seedErr) {
+        console.error('Failed to run self-seeding script:', seedErr.message);
+      }
+    }
+    
     res.json(tests);
   } catch (error) {
     console.error('Error fetching mock tests:', error);
