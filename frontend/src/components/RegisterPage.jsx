@@ -82,26 +82,6 @@ export default function RegisterPage({ onSwitchToLogin }) {
     taken: <span style={{ color: 'var(--color-danger)' }}>✗ Taken</span>
   }[usernameStatus] || null;
 
-  const Field = ({ id, label, type = 'text', field, placeholder, autoComplete, extra }) => (
-    <div>
-      <label className="input-label">{label}</label>
-      <div style={{ position: 'relative' }}>
-        <input
-          id={id}
-          type={type}
-          className={`input-field ${errors[field] ? 'error' : ''}`}
-          placeholder={placeholder}
-          value={form[field]}
-          onChange={set(field)}
-          autoComplete={autoComplete}
-          style={{ width: '100%' }}
-        />
-        {extra}
-      </div>
-      <FieldError msg={errors[field]} />
-    </div>
-  );
-
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -130,11 +110,50 @@ export default function RegisterPage({ onSwitchToLogin }) {
 
           <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <Field id="reg-fullname" label="Full Name" field="fullName" placeholder="John Doe" autoComplete="name" />
-              <Field id="reg-phone" label="Phone Number" field="phone" placeholder="9876543210" autoComplete="tel" />
+              <div>
+                <label className="input-label">Full Name</label>
+                <input
+                  id="reg-fullname"
+                  type="text"
+                  className={`input-field ${errors.fullName ? 'error' : ''}`}
+                  placeholder="John Doe"
+                  value={form.fullName}
+                  onChange={set('fullName')}
+                  autoComplete="name"
+                  style={{ width: '100%' }}
+                />
+                <FieldError msg={errors.fullName} />
+              </div>
+              <div>
+                <label className="input-label">Phone Number</label>
+                <input
+                  id="reg-phone"
+                  type="text"
+                  className={`input-field ${errors.phone ? 'error' : ''}`}
+                  placeholder="9876543210"
+                  value={form.phone}
+                  onChange={set('phone')}
+                  autoComplete="tel"
+                  style={{ width: '100%' }}
+                />
+                <FieldError msg={errors.phone} />
+              </div>
             </div>
 
-            <Field id="reg-email" label="Email Address" type="email" field="email" placeholder="you@example.com" autoComplete="email" />
+            <div>
+              <label className="input-label">Email Address</label>
+              <input
+                id="reg-email"
+                type="email"
+                className={`input-field ${errors.email ? 'error' : ''}`}
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={set('email')}
+                autoComplete="email"
+                style={{ width: '100%' }}
+              />
+              <FieldError msg={errors.email} />
+            </div>
 
             <div>
               <label className="input-label">Username</label>
