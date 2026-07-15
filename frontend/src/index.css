@@ -967,15 +967,20 @@ h2 {
   50%       { opacity: 0.5; }
 }
 
-/* Collapse two-column grid on small screens */
-@media (max-width: 720px) {
-  div[style*="gridTemplateColumns: minmax(280px, 1fr) minmax(280px, 380px)"] {
-    grid-template-columns: 1fr !important;
-  }
+/* Dashboard Columns Grid Wrapper */
+.dashboard-columns-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 380px);
+  gap: 1.5rem;
+  align-items: start;
 }
 
 /* Mobile Responsiveness Improvements */
 @media (max-width: 768px) {
+  .dashboard-columns-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   main {
     padding: 1rem 0.75rem;
   }

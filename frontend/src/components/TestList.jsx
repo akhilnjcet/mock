@@ -274,10 +274,10 @@ export default function TestList({ onSelectTest, onResumeExam }) {
       </div>
 
       {/* ── Two-column layout: Start Test | Exam Progress ───────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 1fr) minmax(280px, 380px)', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="dashboard-columns-grid">
 
         {/* LEFT — Start Test card */}
-        <div className="card" style={{
+        <div className="card start-test-card" style={{
           background: 'linear-gradient(135deg, rgba(16,185,129,0.03) 0%, rgba(5,150,105,0.07) 100%)',
           border: '1px solid var(--color-success)',
         }}>
@@ -306,7 +306,7 @@ export default function TestList({ onSelectTest, onResumeExam }) {
 
           <button
             onClick={handleStartRandomTest}
-            className="btn btn-primary"
+            className="btn btn-primary start-test-btn"
             disabled={generating}
             style={{
               width: '100%', background: 'var(--color-success)',
