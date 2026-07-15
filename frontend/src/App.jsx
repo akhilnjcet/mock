@@ -86,8 +86,8 @@ export default function App() {
 
   const handleSubmitTest = (resultData) => {
     setTestResult(resultData);
-    // After submission go back to list; ExamProgress panel will show latest result
-    setCurrentView('list');
+    // Go directly to the review screen
+    setCurrentView('result');
     setActiveTest(null);
   };
 
@@ -177,6 +177,10 @@ export default function App() {
 
             {currentView === 'progress' && (
               <StudentProgress onBack={handleBackToHome} />
+            )}
+
+            {currentView === 'result' && testResult && (
+              <TestResult result={testResult} onBackToHome={handleBackToHome} />
             )}
 
             {currentView === 'player' && activeTest && (
